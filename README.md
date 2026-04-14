@@ -76,7 +76,8 @@ Para rodar o servidor:
 npm run dev:server
 ```
 
-O servidor ficará disponível em `http://localhost:3000`.
+O servidor ficará disponível em `http://localhost:3004`.
+Endpoint da documentação da aplicação: "http://localhost:3004/docs".
 
 ## Scripts principais
 
