@@ -23,14 +23,14 @@
   },
   "dependencies": {
     "@api-amparo-digital/env": "*",
-    "dotenv": "^17.2.2",
-    "zod": "^4.1.13"
+    "dotenv": "17.4.2",
+    "zod": "4.3.6"
   },
   "devDependencies": {
     "@api-amparo-digital/config": "*",
-    "@biomejs/biome": "^2.2.0",
-    "@types/node": "^22.13.14",
-    "typescript": "^5"
+    "@biomejs/biome": "2.4.11",
+    "@types/node": "22.19.17",
+    "typescript": "5.9.3"
   },
   "packageManager": "npm@10.9.3"
 }
