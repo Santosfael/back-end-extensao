@@ -1,0 +1,19 @@
+{
+  "name": "@api-amparo-digital/env",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./server": "./src/server.ts"
+  },
+  "dependencies": {
+    "@t3-oss/env-core": "0.13.11",
+    "dotenv": "17.4.2",
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "@api-amparo-digital/config": "*",
+    "@types/node": "22.19.17",
+    "typescript": "5.9.3"
+  }
+}

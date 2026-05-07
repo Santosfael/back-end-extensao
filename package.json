@@ -1,0 +1,36 @@
+{
+  "name": "api-amparo-digital",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "type": "module",
+  "scripts": {
+    "dev": "npm run dev --workspaces",
+    "build": "npm run build --workspaces",
+    "check-types": "npm run check-types --workspaces",
+    "dev:server": "npm run dev --workspace server",
+    "db:push": "npm run db:push --workspace @api-amparo-digital/db",
+    "db:studio": "npm run db:studio --workspace @api-amparo-digital/db",
+    "db:generate": "npm run db:generate --workspace @api-amparo-digital/db",
+    "db:migrate": "npm run db:migrate --workspace @api-amparo-digital/db",
+    "db:start": "npm run db:start --workspace @api-amparo-digital/db",
+    "db:watch": "npm run db:watch --workspace @api-amparo-digital/db",
+    "db:stop": "npm run db:stop --workspace @api-amparo-digital/db",
+    "db:down": "npm run db:down --workspace @api-amparo-digital/db",
+    "check": "biome check --write ."
+  },
+  "dependencies": {
+    "@api-amparo-digital/env": "*",
+    "dotenv": "17.4.2",
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "@api-amparo-digital/config": "*",
+    "@biomejs/biome": "2.4.11",
+    "@types/node": "22.19.17",
+    "typescript": "5.9.3"
+  },
+  "packageManager": "npm@10.9.3"
+}

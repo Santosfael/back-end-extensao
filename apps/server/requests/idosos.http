@@ -1,0 +1,223 @@
+### Criar medicamento 1
+POST http://localhost:3000/medicamentos
+Content-Type: application/json
+
+{
+  "nome": "Losartana3",
+  "descricao": "Controle de pressão arterial",
+  "dosagem": "50mg"
+}
+
+### Criar medicamento 2
+POST http://localhost:3000/medicamentos
+Content-Type: application/json
+
+{
+  "nome": "Metformina",
+  "descricao": "Controle de diabetes",
+  "dosagem": "850mg"
+}
+
+### Listar medicamentos
+GET http://localhost:3000/medicamentos
+
+### Criar paciente
+POST http://localhost:3000/pacientes
+Content-Type: application/json
+
+{
+  "nome": "João da Silva",
+  "dataNascimento": "1950-05-10",
+  "rg": "123456789",
+  "cpf": "52998224725",
+  "dataAdmissao": "2026-05-07",
+  "medicamentoIds": [1, 2]
+}
+
+### Criar segundo paciente
+POST http://localhost:3000/pacientes
+Content-Type: application/json
+
+{
+  "nome": "Maria Aparecida Souza",
+  "dataNascimento": "1948-11-22",
+  "rg": "987654321",
+  "cpf": "11144477735",
+  "dataAdmissao": "2026-05-01",
+  "medicamentoIds": [2]
+}
+
+### Listar pacientes ativos
+GET http://localhost:3000/pacientes
+
+### Buscar paciente por ID
+GET http://localhost:3000/pacientes/1
+
+### Buscar por nome
+GET http://localhost:3000/pacientes?nome=João
+
+### Atualizar paciente
+PUT http://localhost:3000/pacientes/1
+Content-Type: application/json
+
+{
+  "nome": "João da Silva Atualizado",
+  "dataNascimento": "1950-05-10",
+  "rg": "123456789",
+  "cpf": "52998224725",
+  "dataAdmissao": "2026-05-07",
+  "medicamentoIds": [1]
+}
+
+### Desligar paciente
+PATCH http://localhost:3000/pacientes/1/status
+Content-Type: application/json
+
+{
+  "status": "DESLIGADO"
+}
+
+### Listar incluindo desligados
+GET http://localhost:3000/pacientes?incluirDesligados=true
+
+### Buscar por nome incluindo desligados
+GET http://localhost:3000/pacientes?nome=João&incluirDesligados=true
+
+### Erro: nome obrigatório
+POST http://localhost:3000/pacientes
+Content-Type: application/json
+
+{
+  "dataNascimento": "1950-05-10",
+  "rg": "123456789",
+  "cpf": "52998224725",
+  "dataAdmissao": "2026-05-07",
+  "medicamentoIds": [1]
+}
+
+### Erro: nome com menos de 3 caracteres
+POST http://localhost:3000/pacientes
+Content-Type: application/json
+
+{
+  "nome": "Jo",
+  "dataNascimento": "1950-05-10",
+  "rg": "123456780",
+  "cpf": "11144477735",
+  "dataAdmissao": "2026-05-07",
+  "medicamentoIds": [1]
+}
+
+### Erro: CPF com menos de 11 dígitos
+POST http://localhost:3000/pacientes
+Content-Type: application/json
+
+{
+  "nome": "Paciente Teste CPF Curto",
+  "dataNascimento": "1950-05-10",
+  "rg": "123456781",
+  "cpf": "1234567890",
+  "dataAdmissao": "2026-05-07",
+  "medicamentoIds": [1]
+}
+
+### Erro: CPF inválido
+POST http://localhost:3000/pacientes
+Content-Type: application/json
+
+{
+  "nome": "Paciente Teste CPF Inválido",
+  "dataNascimento": "1950-05-10",
+  "rg": "123456782",
+  "cpf": "11111111111",
+  "dataAdmissao": "2026-05-07",
+  "medicamentoIds": [1]
+}
+
+### Erro: CPF duplicado
+POST http://localhost:3000/pacientes
+Content-Type: application/json
+
+{
+  "nome": "Paciente CPF Duplicado",
+  "dataNascimento": "1950-05-10",
+  "rg": "123456783",
+  "cpf": "52998224725",
+  "dataAdmissao": "2026-05-07",
+  "medicamentoIds": [1]
+}
+
+### Erro: RG obrigatório
+POST http://localhost:3000/pacientes
+Content-Type: application/json
+
+{
+  "nome": "Paciente Sem RG",
+  "dataNascimento": "1950-05-10",
+  "cpf": "39053344705",
+  "dataAdmissao": "2026-05-07",
+  "medicamentoIds": [1]
+}
+
+### Erro: RG duplicado
+POST http://localhost:3000/pacientes
+Content-Type: application/json
+
+{
+  "nome": "Paciente RG Duplicado",
+  "dataNascimento": "1950-05-10",
+  "rg": "123456789",
+  "cpf": "39053344705",
+  "dataAdmissao": "2026-05-07",
+  "medicamentoIds": [1]
+}
+
+### Erro: data de nascimento futura
+POST http://localhost:3000/pacientes
+Content-Type: application/json
+
+{
+  "nome": "Paciente Data Futura",
+  "dataNascimento": "2030-05-10",
+  "rg": "123456784",
+  "cpf": "39053344705",
+  "dataAdmissao": "2026-05-07",
+  "medicamentoIds": [1]
+}
+
+### Erro: data de admissão futura
+POST http://localhost:3000/pacientes
+Content-Type: application/json
+
+{
+  "nome": "Paciente Admissão Futura",
+  "dataNascimento": "1950-05-10",
+  "rg": "123456785",
+  "cpf": "39814806009",
+  "dataAdmissao": "2030-05-07",
+  "medicamentoIds": [1]
+}
+
+### Erro: medicamento inexistente
+POST http://localhost:3000/pacientes
+Content-Type: application/json
+
+{
+  "nome": "Paciente Medicamento Inexistente",
+  "dataNascimento": "1950-05-10",
+  "rg": "123456786",
+  "cpf": "39814806009",
+  "dataAdmissao": "2026-05-07",
+  "medicamentoIds": [999]
+}
+
+### Erro: status inválido
+PATCH http://localhost:3000/pacientes/1/status
+Content-Type: application/json
+
+{
+  "status": "INATIVO"
+}
+
+### Erro: paciente inexistente
+GET http://localhost:3000/pacientes/999

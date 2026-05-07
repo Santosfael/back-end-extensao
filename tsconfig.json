@@ -1,0 +1,3 @@
+{
+  "extends": "@api-amparo-digital/config/tsconfig.base.json"
+}
