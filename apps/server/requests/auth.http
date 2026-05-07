@@ -1,0 +1,58 @@
+### Health Check
+GET http://localhost:3000/
+
+### Login inválido - usuário inexistente
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "naoexiste@amparo.com",
+  "senha": "123456"
+}
+
+### Login inválido - senha incorreta
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@amparo.com",
+  "senha": "senhaerrada"
+}
+
+### Login válido ADMIN_MASTER
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@amparo.com",
+  "senha": "admin123"
+}
+
+### Consultar usuário autenticado
+GET http://localhost:3000/auth/me
+Authorization: Bearer COLE_O_TOKEN_AQUI
+
+### Consultar usuário autenticado sem token
+GET http://localhost:3000/auth/me
+
+### Consultar usuário autenticado com token inválido
+GET http://localhost:3000/auth/me
+Authorization: Bearer token_invalido
+
+### Login inválido - email inválido
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "email-invalido",
+  "senha": "123456"
+}
+
+### Login inválido - senha vazia
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@amparo.com",
+  "senha": ""
+}

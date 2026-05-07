@@ -2,6 +2,8 @@ import "dotenv/config";
 import { createEnv } from "@t3-oss/env-core";
 import { z } from "zod";
 
+
+
 export const env = createEnv({
   server: {
     DATABASE_URL: z.string().min(1),
@@ -9,8 +11,12 @@ export const env = createEnv({
     HOST: z.string().min(1).default("0.0.0.0"),
     NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
     PORT: z.coerce.number().int().min(1).max(65535).default(3000),
-    COOKIE_SECRET: z.string(),
-    JWT_TOKEN: z.string()
+    COOKIE_SECRET: z.string().min(1),
+    JWT_TOKEN: z.string().min(1),
+
+    ADMIN_MASTER_NAME: z.string().min(1),
+    ADMIN_MASTER_EMAIL: z.string().email(),
+    ADMIN_MASTER_PASSWORD: z.string().min(6)
   },
   runtimeEnv: process.env,
   emptyStringAsUndefined: true,

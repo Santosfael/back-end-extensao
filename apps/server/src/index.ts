@@ -7,6 +7,9 @@ import Fastify from "fastify";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
 import { pacienteRoutes } from "./modules/pacientes/paciente.routes";
 import { medicamentoRoutes } from "./modules/medicamentos/medicamento.routes";
+import { authRoutes } from "./modules/auth/auth.routes";
+import { criarAdminMasterSeNaoExistir } from "./modules/auth/admin-master.seed";
+import { HttpError } from "./modules/common/http-error";
 
 const baseCorsConfig = {
   origin: env.CORS_ORIGIN,
@@ -27,6 +30,20 @@ const fastify = Fastify({
     }
   }
 }).withTypeProvider<ZodTypeProvider>();
+
+fastify.setErrorHandler((error, _request, reply) => {
+  if (error instanceof HttpError) {
+    return reply.status(error.statusCode).send({
+      message: error.message,
+    });
+  }
+
+  fastify.log.error(error);
+
+  return reply.status(500).send({
+    message: "Erro interno do servidor.",
+  });
+});
 
 const port = env.PORT;
 const host = env.HOST;
@@ -67,15 +84,18 @@ fastify.get(
   },
 );
 
-await fastify.register(pacienteRoutes);
-await fastify.register(medicamentoRoutes);
-
 await fastify.register(fastifyApiReference, {
   routePrefix: "/docs",
   configuration: {
     title: "API Proffy Docs",
   },
 });
+
+await fastify.register(authRoutes);
+await fastify.register(pacienteRoutes);
+await fastify.register(medicamentoRoutes);
+
+await criarAdminMasterSeNaoExistir();
 
 fastify.listen({ port, host }, (err) => {
   if (err) {
