@@ -353,27 +353,98 @@ Os testes HTTP podem ser executados pelo arquivo:
 
 -------------------------------------------------------------------------------
 
-## RF-002 – Cadastro de usuário interno
+---
 
-### Objetivo
+## Usuários internos e controle de acesso
 
-Permitir que administradores cadastrem novos usuários internos no sistema, garantindo que o acesso seja criado apenas por usuários autorizados.
+### Funcionalidades
 
-### Fluxo principal
+- cadastro de usuários internos
+- listagem de usuários
+- consulta de usuário por ID
+- atualização de dados de usuário
+- ativação e desativação de usuários
+- autenticação via JWT
+- autorização baseada em perfil de usuário
 
-1. O administrador autenticado acessa o cadastro de usuário interno.
-2. O sistema valida o token JWT.
-3. O sistema verifica se o usuário autenticado possui perfil `ADMIN_MASTER` ou `ADMIN`.
-4. O administrador informa os dados mínimos do novo usuário.
-5. O sistema cria o usuário com senha criptografada.
-6. O novo usuário fica apto a acessar o sistema conforme o perfil definido.
+### Perfis de acesso
 
-### Critérios de aceite
+- ADMIN_MASTER
+- ADMIN
+- ENFERMEIRO
 
-- Apenas usuários com perfil `ADMIN_MASTER` ou `ADMIN` podem cadastrar novos usuários.
-- Usuários sem perfil administrativo recebem bloqueio com `403 Forbidden`.
-- O cadastro deve exigir nome, email, senha e perfil.
-- O email deve ser único.
-- A senha deve ser armazenada com hash bcrypt.
-- O perfil permitido deve ser `ADMIN` ou `ENFERMEIRO`.
-- O sistema não deve expor `senhaHash` nas respostas.
+### Regras de negócio
+
+- email deve ser único
+- senha deve possuir no mínimo 6 caracteres
+- senha nunca é armazenada em texto puro
+- senha armazenada utilizando hash bcrypt
+- apenas usuários administrativos podem gerenciar usuários
+- usuários ENFERMEIRO não podem acessar rotas administrativas
+
+### Controle de acesso
+
+Rotas protegidas:
+- `GET /usuarios`
+- `GET /usuarios/:id`
+- `POST /usuarios`
+- `PUT /usuarios/:id`
+- `PATCH /usuarios/:id/status`
+
+Perfis autorizados:
+- `ADMIN_MASTER`
+- `ADMIN`
+
+### Endpoints
+
+#### Autenticação
+
+- `POST /auth/login`
+
+#### Usuários
+
+- `POST /usuarios`
+- `GET /usuarios`
+- `GET /usuarios/:id`
+- `PUT /usuarios/:id`
+- `PATCH /usuarios/:id/status`
+
+### Exemplo de autenticação
+
+```http
+POST /auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@amparo.com",
+  "senha": "admin123"
+}
+```
+
+### Exemplo de uso de token JWT
+
+```http
+Authorization: Bearer TOKEN
+```
+
+### Exemplo de criação de usuário
+
+```http
+POST /usuarios
+Authorization: Bearer TOKEN
+Content-Type: application/json
+
+{
+  "nome": "Maria Enfermeira",
+  "email": "maria.enfermeira@amparo.com",
+  "senha": "123456",
+  "perfil": "ENFERMEIRO"
+}
+```
+
+### Testes manuais
+
+Arquivos de testes HTTP:
+- `apps/server/requests/auth.http`
+- `apps/server/requests/usuarios.http`
+- `apps/server/requests/autorizacao.http`
