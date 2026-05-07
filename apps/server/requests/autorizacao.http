@@ -1,0 +1,57 @@
+
+
+### Criar usuário com ADMIN_MASTER
+POST http://localhost:3000/usuarios
+Authorization: Bearer COLE O TOKEN AQUI
+Content-Type: application/json
+
+{
+  "nome": "Novo Enfermeiro",
+  "email": "maria.enfermeira@amparo.com",
+  "senha": "123456",
+  "perfil": "ENFERMEIRO"
+}
+
+### Login ADMIN_MASTER
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@amparo.com",
+  "senha": "admin123"
+}
+
+### Login ENFERMEIRO
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "maria.enfermeira@amparo.com",
+  "senha": "123456"
+}
+
+### Acessar usuários sem token
+GET http://localhost:3000/usuarios
+
+### Acessar usuários com token inválido
+GET http://localhost:3000/usuarios
+Authorization: Bearer token_invalido
+
+### Listar usuários com token ADMIN_MASTER
+GET http://localhost:3000/usuarios
+Authorization: Bearer COLE O TOKEN AQUI
+
+### Tentar listar usuários com token ENFERMEIRO
+GET http://localhost:3000/usuarios
+Authorization: Bearer COLE O TOKEN AQUI
+### Tentar criar usuário com token ENFERMEIRO
+POST http://localhost:3000/usuarios
+Authorization: Bearer COLE O TOKEN AQUI
+Content-Type: application/json
+
+{
+  "nome": "Usuário Bloqueado",
+  "email": "bloqueado@amparo.com",
+  "senha": "123456",
+  "perfil": "ENFERMEIRO"
+}

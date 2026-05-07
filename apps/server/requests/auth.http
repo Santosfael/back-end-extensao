@@ -30,7 +30,7 @@ Content-Type: application/json
 
 ### Consultar usuário autenticado
 GET http://localhost:3000/auth/me
-Authorization: Bearer COLE_O_TOKEN_AQUI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibm9tZSI6IkFkbWluaXN0cmFkb3IgTWFzdGVyIiwiZW1haWwiOiJhZG1pbkBhbXBhcm8uY29tIiwicGVyZmlsIjoiQURNSU5fTUFTVEVSIiwiaWF0IjoxNzc4MTc5MjcxLCJleHAiOjE3NzgyMDgwNzF9.YMEnKLAv4pFWDfFsTHDQxaSw9xEs6BBy8B5dcKpFsvg
 
 ### Consultar usuário autenticado sem token
 GET http://localhost:3000/auth/me
@@ -39,7 +39,7 @@ GET http://localhost:3000/auth/me
 GET http://localhost:3000/auth/me
 Authorization: Bearer token_invalido
 
-### Login inválido - email inválido
+### Login inválido - formato de email inválido
 POST http://localhost:3000/auth/login
 Content-Type: application/json
 

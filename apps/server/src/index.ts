@@ -10,6 +10,7 @@ import { medicamentoRoutes } from "./modules/medicamentos/medicamento.routes";
 import { authRoutes } from "./modules/auth/auth.routes";
 import { criarAdminMasterSeNaoExistir } from "./modules/auth/admin-master.seed";
 import { HttpError } from "./modules/common/http-error";
+import { usuarioRoutes } from "./modules/usuarios/usuario.routes";
 
 const baseCorsConfig = {
   origin: env.CORS_ORIGIN,
@@ -92,8 +93,10 @@ await fastify.register(fastifyApiReference, {
 });
 
 await fastify.register(authRoutes);
+await fastify.register(usuarioRoutes);
 await fastify.register(pacienteRoutes);
 await fastify.register(medicamentoRoutes);
+
 
 await criarAdminMasterSeNaoExistir();
 

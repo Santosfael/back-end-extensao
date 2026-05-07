@@ -1,0 +1,116 @@
+### Login ADMIN_MASTER
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@amparo.com",
+  "senha": "admin123"
+}
+
+### Criar usuário enfermeiro
+POST http://localhost:3000/usuarios
+Authorization: Bearer COLE_TOKEN_ADMIN_AQUI
+Content-Type: application/json
+
+{
+  "nome": "Maria Enfermeira",
+  "email": "maria.enfermeira@amparo.com",
+  "senha": "123456",
+  "perfil": "ENFERMEIRO"
+}
+
+### Criar usuário administrador
+POST http://localhost:3000/usuarios
+Authorization: Bearer COLE_TOKEN_ADMIN_AQUI
+Content-Type: application/json
+
+{
+  "nome": "Administrador Local",
+  "email": "admin.local@amparo.com",
+  "senha": "123456",
+  "perfil": "ADMIN"
+}
+
+### Listar usuários
+GET http://localhost:3000/usuarios
+Authorization: Bearer COLE_TOKEN_ADMIN_AQUI
+
+### Listar usuários enfermeiros
+GET http://localhost:3000/usuarios?perfil=ENFERMEIRO
+Authorization: Bearer COLE_TOKEN_ADMIN_AQUI
+
+### Buscar usuário por ID
+GET http://localhost:3000/usuarios/1
+Authorization: Bearer COLE_TOKEN_ADMIN_AQUI
+
+### Atualizar usuário
+PUT http://localhost:3000/usuarios/2
+Authorization: Bearer COLE_TOKEN_ADMIN_AQUI
+Content-Type: application/json
+
+{
+  "nome": "Maria Enfermeira Atualizada",
+  "email": "maria.enfermeira@amparo.com",
+  "perfil": "ENFERMEIRO"
+}
+
+### Desativar usuário
+PATCH http://localhost:3000/usuarios/2/status
+Authorization: Bearer COLE_TOKEN_ADMIN_AQUI
+Content-Type: application/json
+
+{
+  "ativo": false
+}
+
+### Ativar usuário
+PATCH http://localhost:3000/usuarios/2/status
+Authorization: Bearer COLE_TOKEN_ADMIN_AQUI
+Content-Type: application/json
+
+{
+  "ativo": true
+}
+
+### Erro: email duplicado
+POST http://localhost:3000/usuarios
+Authorization: Bearer COLE_TOKEN_ADMIN_AQUI
+Content-Type: application/json
+
+{
+  "nome": "Duplicado",
+  "email": "maria.enfermeira@amparo.com",
+  "senha": "123456",
+  "perfil": "ENFERMEIRO"
+}
+
+### Erro: email inválido
+POST http://localhost:3000/usuarios
+Authorization: Bearer COLE_TOKEN_ADMIN_AQUI
+Content-Type: application/json
+
+{
+  "nome": "Email Inválido",
+  "email": "email-invalido",
+  "senha": "123456",
+  "perfil": "ENFERMEIRO"
+}
+
+### Erro: senha curta
+POST http://localhost:3000/usuarios
+Authorization: Bearer COLE_TOKEN_ADMIN_AQUI
+Content-Type: application/json
+
+{
+  "nome": "Senha Curta",
+  "email": "senha.curta@amparo.com",
+  "senha": "123",
+  "perfil": "ENFERMEIRO"
+}
+
+### Erro: sem token
+GET http://localhost:3000/usuarios
+
+### Erro: token inválido
+GET http://localhost:3000/usuarios
+Authorization: Bearer token_invalido

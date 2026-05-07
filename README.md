@@ -183,7 +183,7 @@ O Better-T-Stack serviu como base para acelerar a criação do projeto, mas o co
 
 Em outras palavras, o template deu a estrutura; a regra de negócio e os endpoints ainda serão evoluídos em cima dessa base.
 
----
+-------------------------------------------------------------------------------
 
 ## Módulo de pacientes
 
@@ -260,3 +260,120 @@ Os testes manuais da API podem ser executados pelo arquivo:
 `apps/server/requests/pacientes.http`
 
 Para executar, use a extensão REST Client no VS Code.
+
+-----------------------------------------------------------------------------
+
+## Autenticação e acesso
+
+### Funcionalidades
+
+- autenticação de usuários com email e senha
+- geração de token JWT após login válido
+- criação automática de usuário ADMIN_MASTER inicial
+- armazenamento seguro de senha utilizando bcrypt
+- validação de credenciais antes da liberação do acesso
+
+### Fluxo principal
+
+1. O usuário informa email e senha.
+2. O sistema valida as credenciais informadas.
+3. O sistema permite o acesso apenas quando os dados forem válidos.
+4. O sistema informa falha de autenticação quando houver erro.
+
+### Critérios implementados
+
+- disponibilização de campos de login e senha
+- validação de credenciais no backend
+- autenticação apenas para usuários válidos e ativos
+- retorno de erro claro para credenciais inválidas
+- geração de token JWT para sessão autenticada
+
+### Regras de segurança
+
+- senha nunca é armazenada em texto puro
+- email deve ser único
+- somente usuários ativos podem autenticar
+- credenciais inválidas retornam erro de autenticação
+- senha armazenada com hash bcrypt
+
+### Perfis de usuário
+
+- ADMIN_MASTER
+- ADMIN
+- ENFERMEIRO
+
+### Variáveis de ambiente
+
+```env
+COOKIE_SECRET=uma_chave_para_cookie
+JWT_TOKEN=uma_chave_para_jwt
+
+ADMIN_MASTER_NAME=Administrador Master
+ADMIN_MASTER_EMAIL=admin@amparo.com
+ADMIN_MASTER_PASSWORD=admin123
+```
+
+### Endpoints
+
+#### Autenticação
+
+- `POST /auth/login`
+
+### Exemplo de login
+
+```http
+POST /auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@amparo.com",
+  "senha": "admin123"
+}
+```
+
+### Exemplo de resposta
+
+```json
+{
+  "token": "jwt_token",
+  "usuario": {
+    "id": 1,
+    "nome": "Administrador Master",
+    "email": "admin@amparo.com",
+    "perfil": "ADMIN_MASTER"
+  }
+}
+```
+
+### Testes manuais
+
+Os testes HTTP podem ser executados pelo arquivo:
+
+- `apps/server/requests/auth.http`
+
+-------------------------------------------------------------------------------
+
+## RF-002 – Cadastro de usuário interno
+
+### Objetivo
+
+Permitir que administradores cadastrem novos usuários internos no sistema, garantindo que o acesso seja criado apenas por usuários autorizados.
+
+### Fluxo principal
+
+1. O administrador autenticado acessa o cadastro de usuário interno.
+2. O sistema valida o token JWT.
+3. O sistema verifica se o usuário autenticado possui perfil `ADMIN_MASTER` ou `ADMIN`.
+4. O administrador informa os dados mínimos do novo usuário.
+5. O sistema cria o usuário com senha criptografada.
+6. O novo usuário fica apto a acessar o sistema conforme o perfil definido.
+
+### Critérios de aceite
+
+- Apenas usuários com perfil `ADMIN_MASTER` ou `ADMIN` podem cadastrar novos usuários.
+- Usuários sem perfil administrativo recebem bloqueio com `403 Forbidden`.
+- O cadastro deve exigir nome, email, senha e perfil.
+- O email deve ser único.
+- A senha deve ser armazenada com hash bcrypt.
+- O perfil permitido deve ser `ADMIN` ou `ENFERMEIRO`.
+- O sistema não deve expor `senhaHash` nas respostas.
