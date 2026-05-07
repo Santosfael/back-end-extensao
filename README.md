@@ -182,3 +182,72 @@ O Better-T-Stack serviu como base para acelerar a criação do projeto, mas o co
 - Biome para padronização de código
 
 Em outras palavras, o template deu a estrutura; a regra de negócio e os endpoints ainda serão evoluídos em cima dessa base.
+
+---
+
+## Módulo de idosos
+
+### Funcionalidades
+
+- cadastro de idosos
+- consulta detalhada
+- edição de cadastro
+- listagem paginada
+- busca por nome
+- controle de status (ATIVO/DESLIGADO)
+
+### Regras de negócio
+
+- CPF único
+- RG único
+- validação de CPF
+- cálculo automático da idade
+- preservação do histórico de idosos desligados
+
+### Modelagem
+
+Entidades:
+- `idosos`
+- `medicamentos`
+- `idosos_medicamentos`
+
+Relacionamento:
+- um idoso pode utilizar vários medicamentos
+- um medicamento pode ser utilizado por vários idosos
+
+```text
+Idosos
+   │
+   │ N:N
+   ▼
+Idosos_Medicamentos
+   ▲
+   │
+Medicamentos
+```
+
+### Endpoints
+
+#### Idosos
+
+- `POST /idosos` — cadastra um idoso
+- `GET /idosos` — lista idosos ativos por padrão
+- `GET /idosos?nome=João` — busca idosos ativos por nome
+- `GET /idosos?incluirDesligados=true` — lista idosos ativos e desligados
+- `GET /idosos?nome=João&incluirDesligados=true` — busca por nome incluindo desligados
+- `GET /idosos/:id` — consulta detalhada de um idoso
+- `PUT /idosos/:id` — edita o cadastro de um idoso
+- `PATCH /idosos/:id/status` — altera o status do idoso
+
+#### Medicamentos
+
+- `POST /medicamentos`
+- `GET /medicamentos`
+
+### Tecnologias utilizadas
+
+- Fastify
+- Drizzle ORM
+- PostgreSQL
+- Zod
+- TypeScript

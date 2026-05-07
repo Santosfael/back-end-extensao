@@ -5,6 +5,8 @@ import fastifySwagger from "@fastify/swagger";
 import fastifyApiReference from "@scalar/fastify-api-reference";
 import Fastify from "fastify";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
+import { idosoRoutes } from "./modules/idosos/idoso.routes";
+import { medicamentoRoutes } from "./modules/medicamentos/medicamento.routes";
 
 const baseCorsConfig = {
   origin: env.CORS_ORIGIN,
@@ -64,6 +66,9 @@ fastify.get(
     return "OK";
   },
 );
+
+await fastify.register(idosoRoutes);
+await fastify.register(medicamentoRoutes);
 
 await fastify.register(fastifyApiReference, {
   routePrefix: "/docs",

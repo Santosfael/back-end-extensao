@@ -1,0 +1,71 @@
+### Criar medicamento 1
+POST http://localhost:3000/medicamentos
+Content-Type: application/json
+
+{
+  "nome": "Losartana",
+  "descricao": "Controle de pressão arterial",
+  "dosagem": "50mg"
+}
+
+### Criar medicamento 2
+POST http://localhost:3000/medicamentos
+Content-Type: application/json
+
+{
+  "nome": "Metformina",
+  "descricao": "Controle de diabetes",
+  "dosagem": "850mg"
+}
+
+### Listar medicamentos
+GET http://localhost:3000/medicamentos
+
+### Criar idoso
+POST http://localhost:3000/idosos
+Content-Type: application/json
+
+{
+  "nome": "João da Silva",
+  "dataNascimento": "1950-05-10",
+  "rg": "123456789",
+  "cpf": "52998224725",
+  "dataAdmissao": "2026-05-07",
+  "medicamentoIds": [1, 2]
+}
+
+### Listar idosos ativos
+GET http://localhost:3000/idosos
+
+### Buscar idoso por ID
+GET http://localhost:3000/idosos/1
+
+### Buscar por nome
+GET http://localhost:3000/idosos?nome=João
+
+### Atualizar idoso
+PUT http://localhost:3000/idosos/1
+Content-Type: application/json
+
+{
+  "nome": "João da Silva Atualizado",
+  "dataNascimento": "1950-05-10",
+  "rg": "123456789",
+  "cpf": "52998224725",
+  "dataAdmissao": "2026-05-07",
+  "medicamentoIds": [1]
+}
+
+### Desligar idoso
+PATCH http://localhost:3000/idosos/1/status
+Content-Type: application/json
+
+{
+  "status": "DESLIGADO"
+}
+
+### Listar incluindo desligados
+GET http://localhost:3000/idosos?incluirDesligados=true
+
+### Buscar por nome incluindo desligados
+GET http://localhost:3000/idosos?nome=João&incluirDesligados=true
