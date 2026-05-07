@@ -7,6 +7,9 @@ import type {
   ListarPacientesInput,
 } from "./paciente.validators";
 
+/**
+ * Calcula a idade completa considerando se o aniversário já ocorreu no ano atual.
+ */
 function calcularIdade(dataNascimento: Date): number {
   const hoje = new Date();
 
@@ -32,6 +35,7 @@ export class PacienteService {
   private readonly repository = new PacienteRepository();
 
   async criar(input: CriarPacienteInput) {
+    // CPF e RG identificam o paciente e não podem se repetir no cadastro.
     const duplicado = await this.repository.buscarDuplicidade({
       cpf: input.cpf,
       rg: input.rg,
@@ -45,6 +49,7 @@ export class PacienteService {
       throw new HttpError(409, "Já existe um paciente cadastrado com este RG.");
     }
 
+    // Evita criar vínculo com medicamentos inexistentes.
     const medicamentosExistem = await this.repository.validarMedicamentosExistem(
       input.medicamentoIds
     );
@@ -61,6 +66,7 @@ export class PacienteService {
         rg: input.rg,
         cpf: input.cpf,
         dataAdmissao: input.dataAdmissao,
+        // Todo paciente nasce ativo; desligamentos preservam o histórico do cadastro.
         status: "ATIVO",
       },
       input.medicamentoIds
@@ -91,6 +97,7 @@ export class PacienteService {
     }
 
     if (input.cpf || input.rg) {
+      // Na edição, a verificação ignora o próprio paciente para permitir manter CPF/RG.
       const duplicado = await this.repository.buscarDuplicidade({
         cpf: input.cpf,
         rg: input.rg,
@@ -107,6 +114,7 @@ export class PacienteService {
     }
 
     if (input.medicamentoIds) {
+      // A lista enviada substitui os vínculos atuais do paciente.
       const medicamentosExistem = await this.repository.validarMedicamentosExistem(
         input.medicamentoIds
       );
@@ -118,6 +126,7 @@ export class PacienteService {
 
     const dataNascimento = input.dataNascimento ?? existente.dataNascimento;
 
+    // A idade é sempre derivada da data de nascimento armazenada.
     await this.repository.atualizar(
       id,
       {
@@ -141,6 +150,7 @@ export class PacienteService {
       throw new HttpError(404, "Paciente não encontrado.");
     }
 
+    // O status controla a visibilidade padrão sem remover o paciente do histórico.
     const atualizado = await this.repository.alterarStatus(id, input.status);
 
     if (!atualizado) {

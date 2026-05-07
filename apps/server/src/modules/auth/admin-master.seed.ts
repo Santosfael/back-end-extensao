@@ -5,6 +5,7 @@ import { AuthRepository } from "./auth.repository";
 export async function criarAdminMasterSeNaoExistir() {
   const repository = new AuthRepository();
 
+  // O ADMIN_MASTER inicial é criado apenas quando ainda não existe outro perfil mestre.
   const existeAdminMaster = await repository.existeAdminMaster();
 
   if (existeAdminMaster) {

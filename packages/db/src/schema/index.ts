@@ -26,6 +26,7 @@ export const pacientes = pgTable(
     rg: varchar("rg", { length: 20 }).notNull(),
     cpf: varchar("cpf", { length: 11 }).notNull(),
     dataAdmissao: date("data_admissao", { mode: "date" }).notNull(),
+    // DESLIGADO preserva o cadastro e remove o paciente das listagens padrão.
     status: statusPacienteEnum("status").notNull().default("ATIVO"),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
@@ -53,6 +54,7 @@ export const medicamentos = pgTable(
   })
 );
 
+// Associação N:N entre pacientes e medicamentos, sem duplicar o mesmo vínculo.
 export const pacientesMedicamentos = pgTable(
   "pacientes_medicamentos",
   {

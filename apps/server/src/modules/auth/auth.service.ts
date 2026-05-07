@@ -15,6 +15,7 @@ export class AuthService {
       throw new HttpError(401, "E-mail ou senha inválidos.");
     }
 
+    // Usuários desativados permanecem cadastrados, mas não podem iniciar sessão.
     if (!usuario.ativo) {
       throw new HttpError(403, "Usuário inativo.");
     }

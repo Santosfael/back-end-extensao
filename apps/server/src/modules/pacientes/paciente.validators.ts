@@ -2,6 +2,9 @@ import { z } from "zod";
 
 const somenteNumeros = (value: string) => value.replace(/\D/g, "");
 
+/**
+ * Valida o CPF usando os dígitos verificadores oficiais.
+ */
 export function validarCpf(cpfOriginal: string): boolean {
   const cpf = somenteNumeros(cpfOriginal);
 

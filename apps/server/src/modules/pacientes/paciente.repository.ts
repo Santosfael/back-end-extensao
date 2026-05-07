@@ -24,6 +24,7 @@ export class PacienteRepository {
 
     if (!paciente) return null;
 
+    // Carrega os medicamentos por meio da tabela de associação paciente/medicamento.
     const medicamentosDoPaciente = await db
       .select({
         id: medicamentos.id,
@@ -43,23 +44,23 @@ export class PacienteRepository {
   }
 
   async buscarDuplicidade({ cpf, rg, ignorarId }: BuscarDuplicidadeParams) {
-  const filtros = [];
+    const filtros = [];
 
-  if (cpf) filtros.push(eq(pacientes.cpf, cpf));
-  if (rg) filtros.push(eq(pacientes.rg, rg));
+    if (cpf) filtros.push(eq(pacientes.cpf, cpf));
+    if (rg) filtros.push(eq(pacientes.rg, rg));
 
-  if (filtros.length === 0) return null;
+    if (filtros.length === 0) return null;
 
-  const whereDuplicidade = filtros.length === 1 ? filtros[0] : or(...filtros);
+    const whereDuplicidade = filtros.length === 1 ? filtros[0] : or(...filtros);
 
-  const whereFinal = ignorarId
-    ? and(whereDuplicidade, ne(pacientes.id, ignorarId))
-    : whereDuplicidade;
+    const whereFinal = ignorarId
+      ? and(whereDuplicidade, ne(pacientes.id, ignorarId))
+      : whereDuplicidade;
 
-  const [registro] = await db.select().from(pacientes).where(whereFinal).limit(1);
+    const [registro] = await db.select().from(pacientes).where(whereFinal).limit(1);
 
-  return registro ?? null;
-}
+    return registro ?? null;
+  }
 
   async listar(params: {
     page: number;
@@ -78,6 +79,7 @@ export class PacienteRepository {
     if (params.status) {
       filtros.push(eq(pacientes.status, params.status));
     } else if (!params.incluirDesligados) {
+      // Por padrão, pacientes desligados ficam fora das listagens operacionais.
       filtros.push(eq(pacientes.status, "ATIVO"));
     }
 
@@ -140,6 +142,7 @@ export class PacienteRepository {
       }
 
       if (medicamentoIds) {
+        // Atualizar medicamentos significa substituir completamente os vínculos anteriores.
         await tx.delete(pacientesMedicamentos).where(eq(pacientesMedicamentos.pacienteId, id));
 
         if (medicamentoIds.length > 0) {

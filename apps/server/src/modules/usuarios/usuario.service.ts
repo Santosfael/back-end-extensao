@@ -14,6 +14,7 @@ export class UsuarioService {
   async criar(input: CriarUsuarioInput) {
     const emailNormalizado = input.email.toLowerCase().trim();
 
+    // E-mail é a identidade de login e deve permanecer único.
     const duplicado = await this.repository.buscarDuplicidade({
       email: emailNormalizado,
     });
@@ -90,6 +91,7 @@ export class UsuarioService {
       throw new HttpError(404, "Usuário não encontrado.");
     }
 
+    // Alterar status ativa ou bloqueia o login sem apagar o usuário.
     const atualizado = await this.repository.alterarStatus(id, input.ativo);
 
     if (!atualizado) {

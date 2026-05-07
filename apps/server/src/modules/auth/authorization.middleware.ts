@@ -4,6 +4,9 @@ import type { AuthenticatedUser } from "./jwt.service";
 
 type PerfilUsuario = AuthenticatedUser["perfil"];
 
+/**
+ * Restringe a rota aos perfis informados no preHandler.
+ */
 export function autorizarPerfis(perfisPermitidos: PerfilUsuario[]) {
   return async function (request: FastifyRequest, _reply: FastifyReply) {
     const usuario = request.user;

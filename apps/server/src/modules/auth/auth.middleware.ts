@@ -18,6 +18,7 @@ export async function autenticar(request: FastifyRequest, _reply: FastifyReply) 
   }
 
   try {
+    // Após validar o JWT, o usuário fica disponível para os próximos middlewares.
     request.user = jwtService.verificarToken(token);
   } catch {
     throw new HttpError(401, "Token inválido ou expirado.");
